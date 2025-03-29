@@ -421,7 +421,31 @@ for i = 1, 9 do
                      end
                   end,
                   {description = "move focused client to tag #"..i, group = "tag"}),
-        -- Toggle tag on focused client.
+
+	-- Move client to next tag
+	awful.key({ modkey, "Shift" }, "Right",
+		    function ()
+		    	     if client.focus then
+			     	local tag = client.focus.screen.tags[client.focus.screen.selected_tag.index + 1]
+				if tag then
+				   client.focus:move_to_tag(tag)
+				end
+			   end
+			end,
+			{description = "Move focused client to next tag", group = "tag"}),
+
+	-- Move client to previous tag
+	awful.key({ modkey, "Shift" }, "Left",
+		    function ()
+		    	     if client.focus then
+			     	local tag = client.focus.screen.tags[client.focus.screen.selected_tag.index - 1]
+				if tag then
+				   client.focus:move_to_tag(tag)
+				end
+				end
+			end,
+			{description = "Move focused client to previous tag", group = "tag"}),
+	-- Toggle tag on focused client.
         awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9,
                   function ()
                       if client.focus then
