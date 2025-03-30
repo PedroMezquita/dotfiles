@@ -422,29 +422,6 @@ for i = 1, 9 do
                   end,
                   {description = "move focused client to tag #"..i, group = "tag"}),
 
-	-- Move client to next tag
-	awful.key({ modkey, "Shift" }, "Right",
-		    function ()
-		    	     if client.focus then
-			     	local tag = client.focus.screen.tags[client.focus.screen.selected_tag.index + 1]
-				if tag then
-				   client.focus:move_to_tag(tag)
-				end
-			   end
-			end,
-			{description = "Move focused client to next tag", group = "tag"}),
-
-	-- Move client to previous tag
-	awful.key({ modkey, "Shift" }, "Left",
-		    function ()
-		    	     if client.focus then
-			     	local tag = client.focus.screen.tags[client.focus.screen.selected_tag.index - 1]
-				if tag then
-				   client.focus:move_to_tag(tag)
-				end
-				end
-			end,
-			{description = "Move focused client to previous tag", group = "tag"}),
 	-- Toggle tag on focused client.
         awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9,
                   function ()
@@ -458,7 +435,30 @@ for i = 1, 9 do
                   {description = "toggle focused client on tag #" .. i, group = "tag"})
     )
 end
-
+globalkeys = gears.table.join(globalkeys,
+        -- Move client to next tag 
+        awful.key({ modkey, "Shift", "Control" }, "Right", 
+                    function () 
+                             if client.focus then 
+                                local tag = client.focus.screen.tags[client.focus.screen.selected_tag.index + 1] 
+                                if tag then 
+                                   client.focus:move_to_tag(tag) 
+                                end 
+                           end 
+                        end, 
+                        {description = "Move focused client to next tag", group = "tag"}),
+        -- Move client to previous tag 
+        awful.key({ modkey, "Shift", "Control" }, "Left", 
+                    function () 
+                             if client.focus then 
+                                local tag = client.focus.screen.tags[client.focus.screen.selected_tag.index - 1] 
+                                if tag then 
+                                   client.focus:move_to_tag(tag) 
+                                end 
+                                end 
+                        end, 
+                        {description = "Move focused client to previous tag", group = "tag"})
+)
 clientbuttons = gears.table.join(
     awful.button({ }, 1, function (c)
         c:emit_signal("request::activate", "mouse_click", {raise = true})
